@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,14 +19,9 @@ namespace Lab3
         }
         private void Guardar(string fileName, string texto)
         {
-            //Abrir el archivo: Write sobreescribe el archivo, Append agrega los datos al final del archivo
-            FileStream stream = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
-            //Crear un objeto para escribir el archivo
+            FileStream stream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
             StreamWriter writer = new StreamWriter(stream);
-            //Usar el objeto para escribir al archivo, WriteLine, escribe linea por linea
-            //Write escribe todo en la misma linea. En este ejemplo se hará un dato por cada línea
             writer.WriteLine(texto);
-            //Cerrar el archivo
             writer.Close();
         }
 
@@ -38,8 +34,20 @@ namespace Lab3
             if (comboBoxurl.Text != null)
                 uri = comboBoxurl.Text;
 
-            if 
-               
+            if (!uri.Contains("."))
+                uri = "https://www.google.com/search?q=" + uri;
+            if (!uri.Contains("https://" + uri))
+                uri = "https://" + uri;
+
+               webBrowser1.Navigate(new Uri(uri));
+
+            comboBoxurl.Items.Add(uri);
+            Guardar("Historial.txt", uri);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
